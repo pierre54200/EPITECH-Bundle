@@ -1,0 +1,13 @@
+include/
+lib/
+main.c
+.vscode
+a.out
+*~
+*#
+coding-style-reports.log
+mouli
+tests/
+criterion.c
+bonus/my_fprintf/main.c
+bonus/my_dprintf/main.c
