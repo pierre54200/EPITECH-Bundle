@@ -1,0 +1,6 @@
+./#main.c#:1: MAJOR:C-O1
+./a.out:1: MAJOR:C-O1
+./main.c:11: MINOR:C-F8
+./main.c:12: MINOR:C-G7
+./main.c:14: MINOR:C-F8
+./main.c:15: MINOR:C-F8
