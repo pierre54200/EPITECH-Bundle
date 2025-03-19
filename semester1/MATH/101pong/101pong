@@ -1,0 +1,90 @@
+#!/usr/bin/python3
+import math
+import sys
+import numpy as np
+
+def vector(a,b,c):
+    v = [a,b,c]
+    return v
+def sum_vector(v1, v2):
+    vsum = []
+    for i in range (3):
+        vsum.append(v1[i] + v2[i])
+    return vsum
+
+def diff_vector(v1, v2):
+    vsum = []
+    for i in range (3):
+        vsum.append(v1[i] - v2[i])
+    return vsum
+
+def m_vector(v1, m):
+    vsum = []
+    for i in range (3):
+        vsum.append(v1[i] * m)
+    return vsum
+
+def norm_vector(v):
+    return math.sqrt(v[0]**2 + v[1]**2 + v[2]**2)
+
+def ball_position(x,y,z,x1,y1,z1,n):
+    v = m_vector(vector(x1 - x,y1 - y,z1 - z), n + 1)
+    return sum_vector(v, vector(x,y,z)) 
+
+def ball_bat(x,y,z,x1,y1,z1,n):
+    z2 = ball_position(x,y,z,x1,y1,z1,1)[2]
+    if (z1 >= 0 and z1 > z2):
+        return 1
+    if (z1 <= 0 and z1 < z2):
+        return 1
+    if (z1 == z2 and z1 == 0):
+        return 1
+    return 0
+
+def angle_vector(v):
+    vnorm = norm_vector(v)
+    if (vnorm == 0):
+        return 0
+    return math.degrees(math.asin(v[2]/vnorm))
+
+def verify(argv):
+    if len(argv) != 8:
+        print("invalid number of argument")
+        return 84
+    for i in range(1, 7):
+        for c in argv[i]:
+            if ((c < '0' or c > '9') and c != '-' and c != '.'):
+                print("invalid argument")
+                return 84
+    for c2 in argv[7]:
+        if (c2 < '0' or c2 > '9'):
+            print("invalid argument")
+            return 84
+    return 0
+    
+
+
+if verify(sys.argv) != 84:
+    x = float(sys.argv[1])
+    y = float(sys.argv[2])
+    z = float(sys.argv[3])
+    x1 = float(sys.argv[4])
+    y1 = float(sys.argv[5])
+    z1 = float(sys.argv[6])
+    n = int(sys.argv[7])    
+    v = vector(x,y,z)
+    v1 = vector(x1,y1,z1)
+    v2 = diff_vector(v1, v)
+    v3 = ball_position(x,y,z,x1,y1,z1,n)
+    v4 = angle_vector(v2)
+    print(f"The velocity vector of the ball is:\n({v2[0]:.2f}, {v2[1]:.2f}, {v2[2]:.2f})")
+    print(f"At time t + {n}, ball coordinates will be:\n({v3[0]:.2f}, {v3[1]:.2f}, {v3[2]:.2f})")
+    if (ball_bat(x,y,z,x1,y1,z1,n) == 0) :
+        print("The ball won't reach the paddle.")
+    else :
+        if (v4 < 0):
+            v4 = v4 * -1
+        v4 = v4 % 90
+        print(f"The incidence angle is:\n{v4:.2f} degrees")
+else: 
+    exit(84)

@@ -1,0 +1,161 @@
+#!/usr/bin/python3
+##
+## EPITECH PROJECT, 2024
+## demography
+## File description:
+## 
+##
+import math
+import sys
+import csv
+tab = []
+X = []
+test = 0
+country = []
+allcall = []
+
+
+def create_line(a, b):
+    return [a, b]
+
+def suml(nb_list):
+    sum = 0
+    for nb in nb_list:
+        sum += float(nb)
+    return sum
+
+def squaresum(nb_list):
+    sum = 0
+    for nb in nb_list:
+        sum += float(nb)**2
+    return sum
+
+def sum_two_list(Xi, Yi):
+    sum = 0
+    if len(Xi) != len(Yi):
+        return 84
+    for i in range(len(Xi)):
+        sum += float(Xi[i]) * float(Yi[i])
+    return sum
+ 
+def coeff_b(X, Y, N):
+    if (N * squaresum(X) - suml(X)**2 == 0):
+        return 84
+    return (suml(Y) * squaresum(X) - suml(X) * sum_two_list(X, Y) ) / (N * squaresum(X) - suml(X)**2)
+
+def coeff_a(X, Y, N):
+    if (N * squaresum(X) - suml(X)**2 == 0):
+        return 84
+    return (N * sum_two_list(X, Y) - suml(X) * suml(Y)) / (N * squaresum(X) - suml(X)**2)
+
+with open('105demography_data.csv', newline='') as csvfile:
+    spamreader = csv.reader(csvfile, delimiter=';')
+    for row in spamreader:
+       tab.append(row)
+if (len(sys.argv) == 1):
+    exit(84)
+for j in sys.argv:
+    if (j == sys.argv[0]):
+        continue
+    for i in range (len(tab)):
+        if (tab[i][1] == j):
+            test = i
+    if (test == 0):
+        exit(84)
+    country.append(tab[test][0])
+    test = 0
+
+print(f"Country: ", end='')
+for i in range (len(country)):
+    if (i == len(country) - 1):
+        print(country[i])
+        continue
+    print(f"{country[i]}", end= ', ')
+for i in range (len(tab[0])):
+    if (i > 1):
+        X.append(tab[0][i])
+sumX = suml(X)
+test = 0
+
+calculus = []
+for i in range (len(X)):
+    calculus.append(0)
+for j in sys.argv:
+    if (j == sys.argv[0]):
+        continue
+    for i in range (len(tab)):
+        if (tab[i][1] == j):
+            test = i
+    if (test == 0):
+        exit(84)
+    for i in range (len(tab[test])):
+        if (i > 1):
+            calculus[i - 2] = float(calculus[i - 2]) + float(tab[test][i]) / 1000000
+    test = 0
+
+print("Fit1")
+N = len(X)
+Y = calculus
+a = coeff_a(X, Y, N)
+b = coeff_b(X, Y, N)
+print(f"    Y = ", end='')
+if (a > 0.01 or a < -0.01):
+    print(f"{a:.2f} X", end='')
+if (b > 0.01 or b < -0.01):
+    if (b < 0):
+        print(f" - ", end='')
+        b1 = -b
+        print(f"{b1:.2f}", end='')
+    if (b > 0):
+        print(f" + ", end='')
+        print(f"{b:.2f}", end='')
+print()
+r = 0
+summ = 0
+for i in range(len(calculus)):
+    y = (a * int(X[i]) + b)
+    summ = summ + (calculus[i] - y)**2
+r = math.sqrt(summ / N)
+print(f"    Root-mean-square deviation: {r:.2f}")
+v1 = a * 2050 + b
+print(f"    Population in 2050: {v1:.2f}")
+print("Fit2")
+Y = calculus
+N = len(X)
+sumY = suml(calculus)
+sumXY = sum_two_list(calculus, X)
+a = coeff_a(Y, X, N)
+b = coeff_b(Y, X, N)
+print(f"    X = ", end='')
+print(f"{a:.2f} Y", end='')
+if (b > 0.01 or b < -0.01):
+    if (b < 0):
+        print(f" - ", end='')
+        b = -b
+    if (b > 0):
+        print(f" + ", end='')
+    print(f"{b:.2f}", end='')
+print()
+r1 = 0
+summ = 0
+som = 0
+for i in range(len(calculus)):
+    if (a == 0):
+        exit(84)
+    y = (int(X[i]) - b) / a
+    summ = summ + ((calculus[i] - y)) ** 2
+r1 = math.sqrt(summ / N)
+print(f"    Root-mean-square deviation: {r1:.2f}")
+v1 = (2050 - b) / a
+print(f"    Population in 2050: {v1:.2f}")
+for i in range(len(calculus)):
+    y = sumY / N
+    som = som + (calculus[i] - y)** 2
+summ = 0
+for i in range(len(calculus)):
+    if (a == 0):
+        exit(84)
+    y = (int(X[i]) - b) / a
+    summ = summ + ((y - (sumY / N))) ** 2
+cor = math.sqrt(som / summ)
+print(f"Correlation: {cor:.4f}")

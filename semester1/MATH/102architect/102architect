@@ -1,0 +1,126 @@
+#!/usr/bin/python3
+import math as m
+import sys
+import numpy as np
+def is_a_flag(flag):
+    if len(flag) > 2 :
+        exit(84)
+    if (flag[0] != '-'):
+        exit(84)
+    if (flag[1] != 'z' and flag[1] !='t' and flag[1] !='s' and flag[1] !='r'):
+        exit(84)
+
+def is_a_nbr(nb):
+    for i in nb:
+        if (i < '0' or i > '9') and i != '-' and i != '.':
+            exit(84)
+    return 0;
+
+def matrice_zero(m1):
+    for i in range(m1):
+        if m1[i] == -0:
+            m1[i] = 0
+    return m1
+
+def multi(m1, m2):
+    AB = [0 , 0, 0]
+    for i in range (3):
+        for j in range (3):
+            AB[i] += m1[j] * m2[i][j]
+    return AB
+
+def multi_matrice(m1, m2):
+    AB = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+    for i in range (3):
+        for j in range (3):
+            for k in range (3):
+                AB[i][j] += m1[i][k] * m2[k][j]
+    return AB
+
+def vector(x,y):
+    return[x,y,1]
+
+def translation(x,y):
+    return [[1, 0, x],
+            [0, 1, y],
+            [0, 0, 1]]
+def scaling(x,y):
+    return [[x, 0, 0],
+            [0, y, 0],
+            [0, 0, 1]]
+def rotation(angle):
+    angle = (angle * m.pi) / 180
+    return [[m.cos(angle), -m.sin(angle), 0],
+            [m.sin(angle), m.cos(angle), 0],
+            [0, 0, 1]]
+def sym(angle):
+    angle = (angle * m.pi) / 180
+    return [[m.cos(2 * angle), m.sin(2 * angle), 0],
+            [m.sin(2 * angle), -m.cos(2 * angle), 0],
+            [0, 0, 1]]
+i3 = [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+leng = 50
+if len(sys.argv) < 5:
+    exit (84)
+is_a_nbr(sys.argv[1])
+is_a_nbr(sys.argv[2])
+is_a_flag(sys.argv[3])
+x = float(sys.argv[1])
+y = float(sys.argv[2])
+
+for i in range (len(sys.argv)):
+    if (sys.argv[i] == "-t"):
+        if (len(sys.argv) - i < 3) :
+            exit(84)
+        is_a_nbr(sys.argv[i + 1])
+        is_a_nbr(sys.argv[i + 2])
+        if (len(sys.argv) - i > 3) :
+            is_a_flag(sys.argv[i + 3])
+    if (sys.argv[i] == "-z"):
+        if (len(sys.argv) - i < 3) :
+            exit(84)
+        is_a_nbr(sys.argv[i + 1])
+        is_a_nbr(sys.argv[i + 2])
+        if (len(sys.argv) - i > 3):
+            is_a_flag(sys.argv[i + 3])
+    if (sys.argv[i] == "-r"):
+        if (len(sys.argv) - i < 2) :
+            exit(84)
+        is_a_nbr(sys.argv[i + 1])
+        if (len(sys.argv) - i > 2) :
+            is_a_flag(sys.argv[i + 2])
+    if (sys.argv[i] == "-s"):
+        if (len(sys.argv) - i < 2) :
+            exit(84)
+        is_a_nbr(sys.argv[i + 1])
+        if (len(sys.argv) - i > 2) :
+            is_a_flag(sys.argv[i + 2])
+    
+
+for i in range (len(sys.argv)):
+    if (sys.argv[i] == "-t"):
+        i3 = multi_matrice(translation(float(sys.argv[i + 1]), float(sys.argv[i + 2])), i3)
+        print(f"Translation along vector ({sys.argv[i + 1]}, {sys.argv[i + 2]})")
+    if (sys.argv[i] == "-z"):
+        i3 = multi_matrice(scaling(float(sys.argv[i + 1]), float(sys.argv[i + 2])), i3)
+        print(f"Scaling by factors {sys.argv[i + 1]} and {sys.argv[i + 2]}")
+    if (sys.argv[i] == "-r"):
+        i3 = multi_matrice(rotation(float(sys.argv[i + 1])),i3)
+        print(f"Rotation by a {sys.argv[i + 1]} degree angle")
+    if (sys.argv[i] == "-s"):
+        i3 = multi_matrice(sym(float(sys.argv[i + 1])), i3)
+        print(f"Reflection over an axis with an inclination angle of {sys.argv[i + 1]} degrees")
+for i in range(2):
+    for j in range(2):
+        if (i3[i][j] > -0.01 and i3[i][j] < 0):
+            i3[i][j] = -i3[i][j]
+print(f"{i3[0][0]:.2f}    {i3[0][1]:.2f}    {i3[0][2]:.2f}")
+print(f"{i3[1][0]:.2f}    {i3[1][1]:.2f}    {i3[1][2]:.2f}")
+print(f"{i3[2][0]:.2f}    {i3[2][1]:.2f}    {i3[2][2]:.2f}")
+res1 = multi(vector(x,y),i3)[0]
+res2 = multi(vector(x,y),i3)[1]
+if (res1 > -0.01 and res1 < 0):
+    res1 = -res1
+if (res2 > -0.01 and res2 < 0):
+    res2 = -res2
+print(f"({vector(x,y)[0]:.2f}, {vector(x,y)[1]:.2f}) => ({res1:.2f}, {res2:.2f})")
