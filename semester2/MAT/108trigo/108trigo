@@ -1,0 +1,139 @@
+#!/usr/bin/python3
+import sys
+import math
+
+def usage():
+    print("""USAGE
+    ./108trigo fun a0 a1 a2 ...
+DESCRIPTION
+    fun     function to be applied, among at least "EXP", "COS", "SIN", "COSH"
+            and "SINH"
+    ai      coeficients of the matrix""")
+
+MAX = 60
+
+def identity_matrix(n):
+    tab = [[0 for i in range (n)] for j in range(n)]
+    for i in range(n):
+        for j in range(n):
+            if j == i:
+                tab[i][j] = 1
+    return tab
+
+def display_matrix(tab):
+    for i in range(len(tab)):
+        for j in range(len(tab[0])):
+            if j == len(tab[0]) - 1:
+                print(f"{tab[i][j]:.2f}", end="")
+            else:
+                print(f"{tab[i][j]:.2f}\t", end="")
+        print()
+
+def sub_matrix(A, B):
+    tab = [[0 for i in range (len(A))] for j in range(len(A))]
+    for i in range(len(A)):
+        for j in range(len(B)):
+            tab[i][j] = A[i][j] - B[i][j]
+    return tab
+
+def add_matrix(A, B):
+    tab = [[0 for i in range (len(A))] for j in range(len(A))]
+    for i in range(len(A)):
+        for j in range(len(B)):
+            tab[i][j] = A[i][j] + B[i][j]
+    return tab
+    
+def multi_matrix(A, B):
+    tab = [[0 for i in range (len(A))] for j in range(len(A))]
+    for i in range(len(A)):
+        for j in range(len(B)):
+            for k in range(len(A)):
+                tab[i][j] += A[i][k] * B[k][j]
+    return tab
+
+def divide_matrix(tab, n):
+    if n == 0:
+        exit(84)
+    for i in range(len(tab)):
+        for j in range(len(tab[i])):
+            tab[i][j] /= n
+    return tab
+    
+def power_matrix(tab, n):
+    temp = tab
+    for i in range(n - 1):
+        temp = multi_matrix(temp, tab)
+    return temp
+
+def exp(tab):
+    temp = identity_matrix(len(tab))
+    for i in range(1, MAX):
+        temp = add_matrix(temp, divide_matrix(power_matrix(tab, i), math.factorial(i)))
+    return temp
+
+def cos(tab):
+    temp = identity_matrix(len(tab))
+    for i in range(1, MAX):
+        if i % 2 == 0:
+            temp = add_matrix(temp, divide_matrix(power_matrix(tab, 2 * i), math.factorial(2 * i)))
+        else:
+            temp = sub_matrix(temp, divide_matrix(power_matrix(tab, 2 * i), math.factorial(2 * i)))
+    return temp
+
+def sin(tab):
+    temp = tab
+    for i in range(1, MAX):
+        if i % 2 != 0:
+            temp = add_matrix(temp, divide_matrix(power_matrix(tab, 2 * i + 1), math.factorial(2 * i + 1)))
+        else:
+            temp = sub_matrix(temp, divide_matrix(power_matrix(tab, 2 * i + 1), math.factorial(2 * i + 1)))
+    return temp
+
+def cosh(tab):
+    temp = identity_matrix(len(tab))
+    for i in range(1, MAX):
+        temp = add_matrix(temp, divide_matrix(power_matrix(tab, 2 * i), math.factorial(2 * i)))
+    return temp
+
+def sinh(tab):
+    temp = tab
+    for i in range(1, MAX):
+            temp = add_matrix(temp, divide_matrix(power_matrix(tab, 2 * i + 1), math.factorial(2 * i + 1)))
+    return temp
+
+def main():
+    if (len(sys.argv) < 2):
+        exit(84)
+    if (sys.argv[1] == "-h"):
+        usage()
+        exit(0)
+    if (len(sys.argv) < 3):
+        exit(84)
+    lon = len(sys.argv) - 2
+    test = int(math.sqrt(lon))
+    if (test * test != lon):
+        exit(84)
+    if (sys.argv[1] != "COS" and sys.argv[1] != "SIN" and sys.argv[1] != "EXP" and sys.argv[1] != "COSH" and sys.argv[1] != "SINH"):
+        exit(84)
+    try:
+        for i in range (2, len(sys.argv)):
+            float(sys.argv[i])
+    except ValueError:
+        exit(84)
+    tab = [[0 for i in range (test)] for j in range(test)]     
+    k = 2
+    for i in range(0, test):
+        for j in range(0, test):
+            tab[i][j] = float(sys.argv[k])
+            k += 1
+    if (sys.argv[1] == "COS"):
+        display_matrix(cos(tab))
+    if (sys.argv[1] == "SIN"):
+        display_matrix(sin(tab))
+    if (sys.argv[1] == "COSH"):
+        display_matrix(cosh(tab))
+    if (sys.argv[1] == "SINH"):
+        display_matrix(sinh(tab))
+    if (sys.argv[1] == "EXP"):
+        display_matrix(exp(tab))
+main()

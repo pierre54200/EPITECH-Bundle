@@ -1,0 +1,49 @@
+#!/usr/bin/python3
+import sys
+
+def usage():
+    print("""USAGE
+    ./107transfer [num den]+
+DESCRIPTION
+    num     polynomial numerator defined by its coefficients
+    den     polynomial denominator defined by its coefficients""")
+
+def calcul(str, x: float, nb) -> float:
+    if nb == len(str) - 1:
+        return str[nb]
+    else:
+        return str[nb] + x * calcul(str, x, nb + 1)
+
+def main():
+    if (len(sys.argv) < 2):
+        exit(84)
+    if (sys.argv[1] == "-h"):
+        usage()
+        exit(0)
+    if (len(sys.argv) % 2 == 0):
+        exit(84)
+    tab = []
+    try:
+        for av in sys.argv[1:]:
+            str = av.split("*")
+            tab.append(str)
+            for i in str:
+                int(i)
+    except ValueError:
+        exit(84)
+    for i in range(len(tab)):
+        for j in range(len(tab[i])):
+            tab[i][j] = int(tab[i][j])
+    x = 0
+    while (x <= 1.001):
+        result = 1
+        for i in range(int(len(tab) / 2)):
+            q = calcul(tab[i * 2 + 1], x, 0)
+            if q == 0:
+                exit(84)
+            result = result * calcul(tab[i * 2], x, 0) / q
+        print(f"{x:.3f} -> {result:.5f}")
+        x += 0.001
+    exit(0)
+
+main()
