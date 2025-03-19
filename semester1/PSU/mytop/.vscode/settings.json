@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "proto.h": "c",
+        "curses.h": "c",
+        "fcntl.h": "c"
+    }
+}
