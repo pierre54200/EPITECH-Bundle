@@ -1,0 +1,6 @@
+[submodule "semester1/pool/day01"]
+	path = semester1/pool/day01
+	url = git@github.com:EpitechPGEPromo2029/B-CPE-100-NCY-1-1-cpoolday01-pierre.maciejewski.git
+[submodule "semester1/pool/day02"]
+	path = semester1/pool/day02
+	url = git@github.com:EpitechPGEPromo2029/B-CPE-100-NCY-1-1-cpoolday02-pierre.maciejewski.git
