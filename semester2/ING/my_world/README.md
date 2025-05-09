@@ -1,5 +1,7 @@
 # My_World:
 
+Grade A + medal
+
 My_World is a world terraformer program, you can display and edit the world at runtime.
 ZHOU Victor / MACIEJEWSKI Pierre
 ---
