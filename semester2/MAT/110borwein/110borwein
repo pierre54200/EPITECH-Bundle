@@ -1,0 +1,101 @@
+#!/usr/bin/python3
+import sys
+import math
+from os import path, stat
+
+def usage():
+    print("""USAGE
+    ./110borwein n
+DESCRIPTION
+    n constant defining the integral to be computed""")
+
+MAX = 5000    
+
+def error_handler(arg):
+    if (len(arg) != 2):
+        exit(84)
+    if (arg[1] == '-h'):
+        usage()
+    try:
+        nb = int(arg[1])
+        if (nb < 0):
+            exit(84)
+    except:
+        exit(84)
+    return nb
+
+def print_value(n, n1, n2):
+    print(f"I{n} = {n1:.10f}")
+    print(f"diff = {n2:.10f}")
+
+def div(nb, q):
+    if (q == 0):
+        exit(84)
+    return nb / q
+
+def borwein(n1, n2):
+    a = 0
+
+    if (n2 == 0):
+        return 1
+    while (a <= n1):
+        temp = (2 * a) + 1
+        if (a != 0):
+            stock *= div(math.sin(div(n2, temp)), (div(n2, temp)))
+        else:
+            stock = div(math.sin(div(n2, temp)), (div(n2, temp)))
+        a += 1
+    return stock
+
+def midpoint(nb):
+    a = 0.5
+    b = 0
+    stock = 0
+    while (a <= MAX):
+        stock += borwein(nb, div((a + b), 2)) * (a - b)
+        a += 0.5
+        b += 0.5
+    return stock
+
+def trapezoidal(nb):
+    a = 0.5
+    b = 0
+    stock = 0
+    while (a <= MAX):
+        stock += (borwein(nb, a) + borwein(nb, b)) * div((a - b), 2)
+        a += 0.5
+        b += 0.5
+    return stock
+
+def simpson(nb):
+    a = 0.5
+    b = 0
+    stock = 0
+    while (a <= MAX):
+        stock += (borwein(nb, a) + borwein(nb, b) + 4 * borwein(nb, div((a + b), 2))) * div((a - b), 6)
+        a += 0.5
+        b += 0.5
+    return stock
+
+def display(nb, mid_nb, tra_nb, sim_nb):
+    diff = div(math.pi, 2)
+    print("Midpoint:")
+    print_value(nb, mid_nb, abs(mid_nb - diff))
+    print()
+    print("Trapezoidal:")
+    print_value(nb, tra_nb, abs(tra_nb - diff))
+    print()
+    print("Simpson:")
+    print_value(nb, sim_nb, abs(sim_nb - diff))
+
+def main():
+    nb = error_handler(sys.argv)
+
+    mid_nb = midpoint(nb)
+    tra_nb = trapezoidal(nb)
+    sim_nb = simpson(nb)
+
+    display(nb, mid_nb, tra_nb, sim_nb)
+
+
+main()
