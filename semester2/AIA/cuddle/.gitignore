@@ -1,0 +1,10 @@
+cuddle
+
+*.a
+*.o
+
+build/
+.vscode/
+
+*~
+*#*#

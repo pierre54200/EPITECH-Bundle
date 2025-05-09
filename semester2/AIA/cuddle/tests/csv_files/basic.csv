@@ -1,0 +1,8 @@
+name,age,city,float,unsigned
+Alice,25,Paris,10.1e,101
+Bob,30,London,1.1e,1000
+Charlie,35,Berlin,50.1e,1220
+Leo,25,Paris,1000.1e,1003
+Nathan,30.5,London,0.1e,1220
+Alex,350.5,Berlin,0,10039
+Paul,25,Paris,130.1e,1048

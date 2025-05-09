@@ -1,0 +1,8 @@
+name,age,city,bo
+Alice,25e,Paris,true
+Bob,30e,London,false
+Charlie,35e,Berlin,TRue
+Léo,25e,Paris,FalSe
+Nathan,30e,London,TRUE
+Alex,35e,Berlin,TRUE
+Paul,25e,Paris,TRUE

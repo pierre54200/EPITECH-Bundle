@@ -1,0 +1,8 @@
+name,age,city,bo,capital
+Alice,25,Paris,true,1250
+Bob,30,London,false,40
+Charlie,35,Berlin,TRue,10000
+Léo,25,Paris,FalSe,12
+Nathan,30,London,TRUE,1
+Alex,35,Berlin,TRUE,23
+Paul,4.1,Paris,TRUE,0
