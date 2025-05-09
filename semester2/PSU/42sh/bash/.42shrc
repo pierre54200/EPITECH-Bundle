@@ -1,0 +1,37 @@
+## BASHRC pour le projet 42sh ##
+
+## BASH_COLOR ##
+    color path blue
+    color user green
+    color git yellow
+    color time white
+    color timer white
+
+
+## ALIAS ##
+    alias ls='ls --color=auto -a'
+    alias dir='dir --color=auto'
+    alias vdir='vdir --color=auto'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+    alias mr_clean='find . -name "*~*" -delete -o -name "*#*" -delete -o -name "*.out" -delete -o -name "a-*" -delete -o -name "*.o" -delete -o -name "*.gch" -delete -o -name "*.log" -delete'
+    alias push='mr_clean | ~/git/push_that.sh'
+    alias add='mr_clean | ~/git/add_that.sh'
+    alias del='mr_clean | ~/git/delete_that.sh'
+    alias fix='mr_clean | ~/git/modify_that.sh'
+    alias status='git status'
+    alias pull='git pull'
+    alias copy='cp -r ~/Lib/* .'
+    alias copyG='cp -r ~/LibG/* .'
+    alias cs='coding-style . . && cat coding-style-reports.log && rm -f *.log'
+    alias change='git checkout $1'
+    alias origin='git push --set-upstream $1 $2'
+    alias merge='git merge'
+    alias emacs='emacs -nw'
+    alias leak='valgrind --quiet --leak-check=full'
+    alias ll='ls -alF'
+    alias la='ls -A'
+    alias l='ls -CF'
+    alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+## !ALIAS ##

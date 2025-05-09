@@ -1,0 +1,14 @@
+.
+..
+.git
+.github
+.gitignore
+Makefile
+README.md
+bash
+build
+coding-style-reports.log
+include
+man
+src
+tests

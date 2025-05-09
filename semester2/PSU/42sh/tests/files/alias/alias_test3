@@ -1,0 +1,3 @@
+alias ls='ls --color=auto -a'
+alias l='ls -CF'
+alias cs='coding-style . . && cat coding-style-reports.log && rm -f *.log'
