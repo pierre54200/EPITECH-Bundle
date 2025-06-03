@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login - EpyTodo</title>
+  <style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #121212;
+    color: #eee;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  .login-container {
+    background: #222;
+    padding: 2rem;
+    border-radius: 8px;
+    width: 300px;
+    box-shadow: 0 0 10px #000;
+  }
+  h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: none;
+    border-radius: 4px;
+  }
+  button {
+    width: 100%;
+    color: #000;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .error {
+    color: #f33;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  .top-button-container {
+    position: absolute;
+    top: 20px;
+    left: 6%;
+    transform: translateX(-50%);
+    z-index: 1000;
+  }
+  .square-button {
+    width: 120px;
+    height: 80px;
+    border: none;
+    border-radius: 8px;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  </style>
+</head>
+
+<body>
+  <div class="top-button-container">
+    <button class="square-button" onclick="window.location.href='/'">
+      <h2>Home</h2>
+    </button>
+  </div>
+  <div class="login-container">
+    <h2>Register</h2>
+    <div id="error" class="error"></div>
+      <input type="text" id="username" placeholder="Username" />
+      <input type="password" id="password" placeholder="Password" />
+      <button onclick="handleLogin()">Register</button>
+    </div>
+
+<script>
+  async function handleLogin() {
+    const errorDiv = document.getElementById('error');
+    errorDiv.textContent = '';
+
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+
+    if (!username || !password) {
+      errorDiv.textContent = 'Complete everything';
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      alert('Login ...');
+      window.location.href = '/dashboard.html';
+    } else {
+      errorDiv.textContent = data.message || 'Login error';
+    }
+    } catch (err) {
+      errorDiv.textContent = 'Error';
+    }
+  }
+</script>
+
+</body>
+
+</html>

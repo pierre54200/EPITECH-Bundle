@@ -1,0 +1,8 @@
+MYSQL_DATABASE="epytodo"
+MYSQL_HOST="localhost"
+MYSQL_USER="epy_user"
+MYSQL_ROOT_PASSWORD="epy_pass"
+
+SECRET="Les100CastorToutRouge@"
+
+PORT=3000
